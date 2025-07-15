@@ -1,0 +1,36 @@
+{
+	"schemaVersion": 1,
+	"id": "hudinfoplusplus",
+	"version": "${version}",
+	"name": "HudInfoPlusPlus",
+	"description": "A customizable HUD mod for Minecraft, displaying FPS, Coordinates, and Days Played.",
+	"authors": [
+		"noob215376"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+	},
+	"license": "MIT",
+	"icon": "assets/hudinfoplusplus/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.noob215376.hudinfoplusplus.HudInfoPlusPlus"
+		],
+		"client": [
+			"net.noob215376.hudinfoplusplus.client.HudInfoClient"
+		]
+	},
+	"mixins": [
+		"hudinfoplusplus.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.14",
+		"minecraft": "~1.21.6",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
