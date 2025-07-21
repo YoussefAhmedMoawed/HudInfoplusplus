@@ -16,6 +16,7 @@ public class ModConfig {
   public boolean showFps = true;
   public boolean showCoordinates = true;
   public boolean showDaysPlayed = true;
+  public boolean showBiome = true;
   public int fpsColor = 0xFFFFFFFF;
 
   public static ModConfig load() {
