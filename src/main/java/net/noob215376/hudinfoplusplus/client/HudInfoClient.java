@@ -120,14 +120,16 @@ public class HudInfoClient implements ClientModInitializer {
 
     if (HudInfoPlusPlus.CONFIG.showFps) {
       String fpsText = "FPS: " + client.getCurrentFps();
-      context.drawTextWithShadow(textRenderer, Text.literal(fpsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor);
+      // Changed from drawTextWithShadow to drawText
+      context.drawText(textRenderer, Text.literal(fpsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false); // false for no shadow
       currentY += LINE_HEIGHT;
     }
 
     if (HudInfoPlusPlus.CONFIG.showCoordinates) {
       BlockPos pos = client.player.getBlockPos();
       String coordsText = String.format("X: %d Y: %d Z: %d", pos.getX(), pos.getY(), pos.getZ());
-      context.drawTextWithShadow(textRenderer, Text.literal(coordsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor);
+      // Changed from drawTextWithShadow to drawText
+      context.drawText(textRenderer, Text.literal(coordsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false); // false for no shadow
       currentY += LINE_HEIGHT;
     }
 
@@ -138,7 +140,8 @@ public class HudInfoClient implements ClientModInitializer {
       long hours = ticksToday / 1000L;
       long mins = (ticksToday % 1000L) * 60L / 1000L;
       String daysText = String.format("Days: %d (%02d:%02d)", days, hours, mins);
-      context.drawTextWithShadow(textRenderer, Text.literal(daysText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor);
+      // Changed from drawTextWithShadow to drawText
+      context.drawText(textRenderer, Text.literal(daysText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false); // false for no shadow
       currentY += LINE_HEIGHT;
     }
 
@@ -161,11 +164,13 @@ public class HudInfoClient implements ClientModInitializer {
       }
 
       String prefix = "Biome: ";
-      context.drawTextWithShadow(textRenderer, Text.literal(prefix), PADDING_X, currentY, 0xFFFFFFFF);
+      // Changed from drawTextWithShadow to drawText
+      context.drawText(textRenderer, Text.literal(prefix), PADDING_X, currentY, 0xFFFFFFFF, false); // false for no shadow
 
       int biomeNameX = PADDING_X + textRenderer.getWidth(prefix);
 
-      context.drawTextWithShadow(textRenderer, biomeNameText, biomeNameX, currentY, biomeNameColor);
+      // Changed from drawTextWithShadow to drawText
+      context.drawText(textRenderer, biomeNameText, biomeNameX, currentY, biomeNameColor, false); // false for no shadow
 
       currentY += LINE_HEIGHT;
     }
