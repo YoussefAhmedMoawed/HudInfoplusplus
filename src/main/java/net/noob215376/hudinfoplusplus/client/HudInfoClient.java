@@ -120,16 +120,14 @@ public class HudInfoClient implements ClientModInitializer {
 
     if (HudInfoPlusPlus.CONFIG.showFps) {
       String fpsText = "FPS: " + client.getCurrentFps();
-      // Changed from drawTextWithShadow to drawText
-      context.drawText(textRenderer, Text.literal(fpsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false); // false for no shadow
+      context.drawText(textRenderer, Text.literal(fpsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false);
       currentY += LINE_HEIGHT;
     }
 
     if (HudInfoPlusPlus.CONFIG.showCoordinates) {
       BlockPos pos = client.player.getBlockPos();
       String coordsText = String.format("X: %d Y: %d Z: %d", pos.getX(), pos.getY(), pos.getZ());
-      // Changed from drawTextWithShadow to drawText
-      context.drawText(textRenderer, Text.literal(coordsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false); // false for no shadow
+      context.drawText(textRenderer, Text.literal(coordsText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false);
       currentY += LINE_HEIGHT;
     }
 
@@ -137,11 +135,31 @@ public class HudInfoClient implements ClientModInitializer {
       long totalTicks = client.world.getTimeOfDay();
       long days = totalTicks / 24000L;
       long ticksToday = totalTicks % 24000L;
-      long hours = ticksToday / 1000L;
-      long mins = (ticksToday % 1000L) * 60L / 1000L;
-      String daysText = String.format("Days: %d (%02d:%02d)", days, hours, mins);
-      // Changed from drawTextWithShadow to drawText
-      context.drawText(textRenderer, Text.literal(daysText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false); // false for no shadow
+
+      // Adjust ticks so that 6000 ticks (Minecraft's noon) aligns with 12 PM, and 18000 ticks (Minecraft's midnight) aligns with 12 AM.
+      // Minecraft's day starts at 0 ticks (which is 6 AM). We want 12 PM to be at 6000 ticks.
+      // So, we effectively shift the timeline by 6000 ticks.
+      long adjustedTicks = (ticksToday + 6000) % 24000L;
+
+      long hours12 = adjustedTicks / 1000L;
+      long minutes = (adjustedTicks % 1000L) * 60L / 1000L;
+
+      String amPm;
+      if (hours12 >= 12) {
+        amPm = "PM";
+      } else {
+        amPm = "AM";
+      }
+
+      // Convert 0-hour to 12 for 12 AM/PM display
+      if (hours12 == 0) {
+        hours12 = 12; // For 12 AM
+      } else if (hours12 > 12) {
+        hours12 -= 12; // For 1 PM to 11 PM
+      }
+
+      String timeText = String.format("Day: %d (%02d:%02d %s)", days, hours12, minutes, amPm);
+      context.drawText(textRenderer, Text.literal(timeText), PADDING_X, currentY, HudInfoPlusPlus.CONFIG.fpsColor, false);
       currentY += LINE_HEIGHT;
     }
 
@@ -164,13 +182,11 @@ public class HudInfoClient implements ClientModInitializer {
       }
 
       String prefix = "Biome: ";
-      // Changed from drawTextWithShadow to drawText
-      context.drawText(textRenderer, Text.literal(prefix), PADDING_X, currentY, 0xFFFFFFFF, false); // false for no shadow
+      context.drawText(textRenderer, Text.literal(prefix), PADDING_X, currentY, 0xFFFFFFFF, false);
 
       int biomeNameX = PADDING_X + textRenderer.getWidth(prefix);
 
-      // Changed from drawTextWithShadow to drawText
-      context.drawText(textRenderer, biomeNameText, biomeNameX, currentY, biomeNameColor, false); // false for no shadow
+      context.drawText(textRenderer, biomeNameText, biomeNameX, currentY, biomeNameColor, false);
 
       currentY += LINE_HEIGHT;
     }
